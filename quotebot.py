@@ -6,10 +6,10 @@ import random
 import json
 from os import environ
 
-def create_api():
+def create_api(consumer_key, consumer_secret_key, access_token, access_token_secret):
     # Authenticate to Twitter
-    auth = tweepy.OAuthHandler(environ['CONSUMER_KEY'], environ['CONSUMER_SECRET'])
-    auth.set_access_token(environ['ACCESS_KEY'], environ['ACCESS_SECRET'])
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret_key)
+    auth.set_access_token(access_token, access_token_secret)
 
     # Create API object
     api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
@@ -40,7 +40,11 @@ def create_tweet(tweets, tweeted_quotes, api):
 
 
 if __name__ == "__main__":
-    api = create_api()
+    consumer_key = environ['CONSUMER_KEY']
+    consumer_secret_key = environ['CONSUMER_SECRET']
+    access_token = environ['ACCESS_KEY']
+    access_token_secret = environ['ACCESS_SECRET']
+    api = create_api(consumer_key, consumer_secret_key, access_token, access_token_secret)
     tweet_file = 'tweets.json'
     prev_tweets_file = 'prev_tweeted.json'
 
@@ -51,14 +55,15 @@ if __name__ == "__main__":
         previously_tweeted = json.load(f)
 
     # Tweet quote
-    interval = 60 * 60 * 12  # twice a day
+    interval = 60 * 60 * 8  # three times a day
     while True:
         # if we've tweeted all the quotes in the list reset
         if len(tweets) == len(previously_tweeted):
             previously_tweeted = []
-            print("reset list")
+            #print("reset list")
+            with open(prev_tweets_file, 'w') as f:
+                json.dump(previously_tweeted, f)
         create_tweet(tweets, previously_tweeted, api)
-        print(previously_tweeted)
         #update previously tweeted file
         with open(prev_tweets_file, 'w') as f:
             json.dump(previously_tweeted, f)
