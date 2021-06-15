@@ -4,11 +4,12 @@ import config
 import time
 import random
 import json
+from os import environ
 
 def create_api():
     # Authenticate to Twitter
-    auth = tweepy.OAuthHandler(config.api_key, config.api_secret)
-    auth.set_access_token(config.access_token, config.access_secret)
+    auth = tweepy.OAuthHandler(environ['CONSUMER_KEY'], environ['CONSUMER_SECRET'])
+    auth.set_access_token(environ['ACCESS_KEY'], environ['ACCESS_SECRET'])
 
     # Create API object
     api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
