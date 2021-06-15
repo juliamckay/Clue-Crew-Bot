@@ -1,6 +1,5 @@
 import codecs
 import tweepy
-import config
 import time
 import random
 import json
