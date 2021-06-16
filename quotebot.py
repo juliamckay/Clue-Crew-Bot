@@ -66,4 +66,5 @@ if __name__ == "__main__":
         #update previously tweeted file
         with open(prev_tweets_file, 'w') as f:
             json.dump(previously_tweeted, f)
+        print(previously_tweeted)
         time.sleep(interval)
