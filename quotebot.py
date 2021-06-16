@@ -6,8 +6,6 @@ import json
 from os import environ
 #import config
 
-import config
-
 
 def create_api(consumer_key, consumer_secret_key, access_token, access_token_secret):
     # Authenticate to Twitter
